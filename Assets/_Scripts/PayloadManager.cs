@@ -7,10 +7,19 @@ using TMPro;
 
 public class PayloadManager : MonoBehaviour
 {
+    [Header("Text")]
+    [SerializeField]
+    private string connectionTextString = "Starcom Command Center";
+    private string sat0TextString = "Starcom0";
+    private string sat1TextString = "Starcom1";
+    private string sat2TextString = "Starcom2";
+
+    [Header("Functional")]
     [SerializeField]
     private int apiUpdateDelay = 5;
     private DateTime lastApiUpdate;
 
+    [Header("System - DO NOT EDIT BELOW")]
     [SerializeField]
     private TMP_Text[] satText;
     [SerializeField]
@@ -41,14 +50,60 @@ public class PayloadManager : MonoBehaviour
             StartCoroutine(ApiUpdate());
         }
     }
-    private void UpdateConnectionStatus()
+    private void UpdateConnectionStatus(int timeInPeriod, string connectionStatus, StatusData data, int satX)
+    {
+        // satX
+        int satY = (satX + 1) % 3;
+        int satZ = (satX + 2) % 3;
+        connectionText.text = connectionTextString + ": " + connectionStatus;
+        warningText.SetActive(data.IsOnline(satX));
+        if (data.IsOnline(satX))
+        {
+            // looking for offline
+            if (!data.IsOnline(satY))
+            {
+                timeUntilText.text = "Time Until Offline: " + (((10 * satX) + 10) - timeInPeriod);
+            } else if (!data.IsOnline(satZ))
+            {
+                timeUntilText.text = "Time Until Offline: " + (((10 * satX) + 20) - timeInPeriod);
+            } else {
+                timeUntilText.text = "Time Until Offline: Infinite";
+            }
+        } else {
+            // looking for online
+            if (data.IsOnline(satY))
+            {
+                timeUntilText.text = "Time Until Online: " + (((10 * satX) + 10) - timeInPeriod);
+            } else if (data.IsOnline(satZ))
+            {
+                timeUntilText.text = "Time Until Online: " + (((10 * satX) + 20) - timeInPeriod);
+            } else {
+                timeUntilText.text = "Time Until Online: Infinite";
+            }
+        }
+    }
+    private void UpdateAllConnectionStatus()
+    {
+        if (data == null) return;
+        int timeInPeriod = (DateTime.Now - startTime).Minutes % 30;
+        if (timeInPeriod < 10)
+        {
+            UpdateConnectionStatus(timeInPeriod, data.status0, data, 0);
+        } else if (timeInPeriod < 20)
+        {
+            UpdateConnectionStatus(timeInPeriod, data.status1, data, 1);
+        } else {
+            UpdateConnectionStatus(timeInPeriod, data.status2, data, 2);
+        }
+    }
+    private void UpdateAllConnectionStatusOLD()
     {
         if (data == null) return;
         int timeInPeriod = (DateTime.Now - startTime).Minutes % 30;
         if (timeInPeriod < 10)
         {
             // sat0
-            connectionText.text = "DLAB Connection Status: " + data.status0;
+            connectionText.text = connectionTextString + ": " + data.status0;
             warningText.SetActive(data.IsOnline(0));
             if (data.IsOnline(0))
             {
@@ -77,7 +132,7 @@ public class PayloadManager : MonoBehaviour
         } else if (timeInPeriod < 20)
         {
             // sat1
-            connectionText.text = "DLAB Connection Status: " + data.status1;
+            connectionText.text = connectionTextString + ": " + data.status1;
             warningText.SetActive(data.IsOnline(1));
             if (data.IsOnline(1))
             {
@@ -105,7 +160,7 @@ public class PayloadManager : MonoBehaviour
             }
         } else {
             // sat2
-            connectionText.text = "DLAB Connection Status: " + data.status2;
+            connectionText.text = connectionTextString + ": " + data.status2;
             warningText.SetActive(data.IsOnline(2));
             if (data.IsOnline(2))
             {
@@ -188,7 +243,7 @@ public class PayloadManager : MonoBehaviour
                 satAnimators[2].SetBool("IsOffline", false);
                 satSprites[2].color = Color.white;
             }
-            UpdateConnectionStatus();
+            UpdateAllConnectionStatus();
             Debug.Log("status: " + resp.Status().ToString() + "\nbody: " + resp.Body());
         } else {
             Debug.Log("error: " + http.Error());
