@@ -8,20 +8,35 @@ public class TypingText : MonoBehaviour
 {
     [SerializeField]
     private String textToDisplay;
+    [SerializeField]
+    private float timeToWait;
+    private float timeToStart;
+    [SerializeField]
+    private bool stopTyping = false;
+    [SerializeField]
+    private float waitBetweenChars = 0.2f;
 
     private TMP_Text text;
 
     private void Start()
     {
         text = GetComponent<TMP_Text>();
-        StartCoroutine("PrintText");
+        timeToStart = Time.time + timeToWait;
+        text.text = "";
     }
     private void Update()
     {
-        if (Input.GetKey("space"))
+        if (Time.time >= timeToStart)
         {
             StopCoroutine("PrintText");
             StartCoroutine("PrintText");
+            timeToStart = float.MaxValue;
+        }
+        if (Input.GetKey("space"))
+        {
+            StopCoroutine("PrintText");
+            timeToStart = Time.time + timeToWait;
+            text.text = "";
         }
     }
     private IEnumerator PrintText()
@@ -34,9 +49,9 @@ public class TypingText : MonoBehaviour
             {
                 text.text = text.text + "|";
             }
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(waitBetweenChars);
         }
-        while (true)
+        while (!stopTyping)
         {
             if (i++ % 2 == 0)
             {
@@ -44,7 +59,8 @@ public class TypingText : MonoBehaviour
             } else {
                 text.text = textToDisplay;
             }
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(waitBetweenChars);
         }
+        text.text = textToDisplay;
     }
 }
