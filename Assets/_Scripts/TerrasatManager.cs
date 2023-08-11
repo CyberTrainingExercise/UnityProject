@@ -17,6 +17,9 @@ public class TerrasatManager : MonoBehaviour
 
     [Header("Functional")]
     [SerializeField]
+    private int activeSats = 30;
+
+    [SerializeField]
     private int apiUpdateDelay = 5;
     private DateTime lastApiUpdate;
 
@@ -24,6 +27,8 @@ public class TerrasatManager : MonoBehaviour
     private string statusServer = "http://localhost:8000/get_pulses";
 
     [Header("System - DO NOT EDIT BELOW")]
+    [SerializeField]
+    private GameObject adminControls;
     [SerializeField]
     private GameObject[] sats;
     [SerializeField]
@@ -55,6 +60,7 @@ public class TerrasatManager : MonoBehaviour
             satAnimators[i] = sats[i].GetComponentInChildren<Animator>();
             satSprites[i] = sats[i].GetComponentInChildren<SpriteRenderer>();
         }
+        SetActiveSats(activeSats.ToString());
     }
     private void Update()
     {
@@ -65,6 +71,18 @@ public class TerrasatManager : MonoBehaviour
         }
         for (int i = 0; i < satSpinners.Length; i++) {
             satSpinners[i].RotateAround(Vector3.zero, Vector3.forward, Time.deltaTime * satSpinnerSpeeds[i]);
+        }
+        if (Input.GetKeyDown(KeyCode.A) && (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))) {
+            adminControls.SetActive(!adminControls.activeSelf);
+        }
+    }
+    public void SetActiveSats(string input)
+    {
+        for (int i = 0; i < 30; i++) {
+            sats[i].SetActive(true);
+            if (i >= int.Parse(input)) {
+                sats[i].SetActive(false);
+            }
         }
     }
     public void UpdateConnectIP(string input)
