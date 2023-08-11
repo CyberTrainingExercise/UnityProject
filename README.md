@@ -29,3 +29,6 @@ Below is the list of subprojects held within this monorepo.
 
 1. StarcomUI
     - This subproject is the frontend UI interface for the Starcom CTX.
+
+1. TerrasatUI
+    - This subproject is the frontend UI interface for Terrasat within the Black0ut CTX.
