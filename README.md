@@ -10,6 +10,7 @@ To keep CTX repo's small, they will only include their appropriate builds and in
 1. Project Structure
 1. Sub Projects
     1. StarcomUI
+    2. TerrasatUI (Black0ut)
 
 ## Building the Project
 
