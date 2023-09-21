@@ -10,6 +10,7 @@ To keep CTX repo's small, they will only include their appropriate builds and in
 1. Project Structure
 1. Sub Projects
     1. StarcomUI
+    2. TerrasatUI (Black0ut)
 
 ## Building the Project
 
@@ -28,7 +29,7 @@ For documentation, the subproject must link to it's CTX repo. The CTX repo MUST 
 Below is the list of subprojects held within this monorepo.
 
 1. StarcomUI
-    - This subproject is the frontend UI interface for the Starcom CTX.
+    - This subproject is the frontend UI interface for the [Starcom CTX](https://github.com/CyberTrainingExercise/Starcom).
 
 1. TerrasatUI
-    - This subproject is the frontend UI interface for Terrasat within the Black0ut CTX.
+    - This subproject is the frontend UI interface for Terrasat within the [Black0ut CTX](https://github.com/CyberTrainingExercise/Black0ut).
