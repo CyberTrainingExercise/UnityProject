@@ -5,15 +5,15 @@ using System;
 using SimpleHTTP;
 using TMPro;
 
-namespace Terrasat {
-public class TerrasatManager : MonoBehaviour
+namespace BoNY {
+public class BoNYManager : MonoBehaviour
 {
     [Header("Text")]
     [SerializeField]
-    private string connectionTextString = "Starcom Command Center";
-    private string sat0TextString = "Starcom0";
-    private string sat1TextString = "Starcom1";
-    private string sat2TextString = "Starcom2";
+    private string connectionTextString = "BoNY Command Center";
+    private string sat0TextString = "BoNY0";
+    private string sat1TextString = "BoNY1";
+    private string sat2TextString = "BoNY2";
 
     [Header("Functional")]
     [SerializeField]
@@ -41,6 +41,8 @@ public class TerrasatManager : MonoBehaviour
     private TMP_Text timeUntilText;
     [SerializeField]
     private GameObject warningText;
+    [SerializeField]
+    private TMP_Text leaderboardText;
 
     private StatusData data;
 
@@ -51,6 +53,13 @@ public class TerrasatManager : MonoBehaviour
 
     [SerializeField]
     private float[] satSpinnerSpeeds;
+
+    private float[] teamScores;
+    private DateTime[] teamFinishes = new DateTime[6];
+    private float[] highestScore = new float[6];
+    private DateTime defaultTime = new DateTime();
+    [SerializeField]
+    private string[] teamNames;
 
     private void Start()
     {
@@ -91,11 +100,66 @@ public class TerrasatManager : MonoBehaviour
         print("Update status server:" + input);
     }
 
+    private long DateTimeToUnix(DateTime MyDateTime)
+    {
+        TimeSpan timeSpan = MyDateTime - new DateTime();
+
+        return (long)timeSpan.TotalSeconds;
+    }
+
+    private void UpdateLeaderboardText () {
+        // find rankings by creating alphabetical strings for each satellite
+        // those strings are then sorted via arrays.sort() and recreated as useful information on the leaderboard
+        // it's jank, but it works well enough for a one off event
+        // rank first by number of satellite takedowns, then by timestamp (older if better)
+        string[] ranks = new string[6];
+        for (int i = 0; i < 6; i++)
+        {
+            ranks[i] = (6 - teamScores[i]) + "$" + DateTimeToUnix(teamFinishes[i]) + "#" + teamNames[i] + " Team";
+        }
+        Array.Sort(ranks);
+        // update UI
+        leaderboardText.text = "Satellite Takedown Leaderboard:\n";
+        for (int i = 0; i < 6; i++)
+        {
+            //leaderboardText.text += teamNames[i] + " Team:\t" + teamScores[i] + "\n";
+            int score = Int32.Parse(ranks[i].Split("$")[0]);
+            leaderboardText.text += (i + 1) + ". " + ranks[i].Split("#")[1] + " - " + (6 - score) + "\n";
+            print("Rank: " + ranks[i]);
+        }
+    }
+
+    private void UpdateScore(int sat) {
+        // 0-4,5-9,10-14,15-20,etc.
+        int i = 0;
+        if (sat < 5) {
+            i = 0;
+        } else if (sat < 10) {
+            i = 1;
+        } else if (sat < 15) {
+            i = 2;
+        } else if (sat < 20) {
+            i = 3;
+        } else if (sat < 25) {
+            i = 4;
+        } else if (sat < 30) {
+            i = 5;
+        }
+        teamScores[i] += 1;
+        // if this is the first time to a new score, save their time
+        if (teamScores[i] > highestScore[i])
+        {
+            teamFinishes[i] = DateTime.Now;
+            highestScore[i] = teamScores[i];
+        }
+    }
+
     private void SetSat(int sat, string status) {
         if (status == "offline")
         {
             satAnimators[sat].SetBool("IsOffline", true);
             satSprites[sat].color = Color.red;
+            UpdateScore(sat);
         } else if (status == "sleep")
         {
             satAnimators[sat].SetBool("IsOffline", true);
@@ -136,6 +200,7 @@ public class TerrasatManager : MonoBehaviour
             // satText[0].text = "Sat0: " + data.status0;
             // satText[1].text = "Sat1: " + data.status1;
             // satText[2].text = "Sat2: " + data.status2;
+            teamScores = new float[6];
             SetSat(0, data.status0);
             SetSat(1, data.status1);
             SetSat(2, data.status2);
@@ -166,6 +231,7 @@ public class TerrasatManager : MonoBehaviour
             SetSat(27, data.status27);
             SetSat(28, data.status28);
             SetSat(29, data.status29);
+            UpdateLeaderboardText();
             Debug.Log("status: " + resp.Status().ToString() + "\nbody: " + resp.Body());
         } else {
             Debug.Log("error: " + http.Error());
