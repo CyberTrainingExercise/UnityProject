@@ -1102,7 +1102,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Terrasat Command Center Last Update: NONE'
+  m_text: 'BoNY Command Center Last Update: NONE'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7b3602c0f6d0b0ab48dbbc94ea9e0ed9, type: 2}
   m_sharedMaterial: {fileID: -6502808831177099219, guid: 7b3602c0f6d0b0ab48dbbc94ea9e0ed9, type: 2}
@@ -1870,16 +1870,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Leaderboard:
 
-    1. Alpha - 5
-
-    Bravo - 4
-
-    Charlie - 3
-
-    Delta
-    - 1
-
-    Echo - 1'
+    Loading...'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7b3602c0f6d0b0ab48dbbc94ea9e0ed9, type: 2}
   m_sharedMaterial: {fileID: -6502808831177099219, guid: 7b3602c0f6d0b0ab48dbbc94ea9e0ed9, type: 2}

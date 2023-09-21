@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/__Scenes/TerrasatUI.unity
     guid: 545457af986a2b4e49fd90919852cbdb
   - enabled: 0
@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/__Scenes/SymposiumUI.unity
     guid: 7409f9e41538b39329c04b0e5f31ab54
+  - enabled: 1
+    path: Assets/__Scenes/BoNYUI.unity
+    guid: 6b0b93a31c87af3a8ade386284dfa8d7
   m_configObjects: {}

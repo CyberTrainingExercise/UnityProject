@@ -119,7 +119,7 @@ public class BoNYManager : MonoBehaviour
         }
         Array.Sort(ranks);
         // update UI
-        leaderboardText.text = "Satellite Takedown Leaderboard:\n";
+        leaderboardText.text = "Leaderboard:\n";
         for (int i = 0; i < 6; i++)
         {
             //leaderboardText.text += teamNames[i] + " Team:\t" + teamScores[i] + "\n";
