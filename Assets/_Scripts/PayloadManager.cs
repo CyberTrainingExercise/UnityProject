@@ -31,16 +31,31 @@ public class PayloadManager : MonoBehaviour
     [SerializeField]
     private TMP_Text timeUntilText;
     [SerializeField]
+
+    private TMP_Text[] satInjectText;
+    [SerializeField]
     private GameObject warningText;
 
     private StatusData data;
 
     private DateTime startTime;
 
+    private GameObject sat0inject;
+
+    private GameObject sat1inject;
+
+    private GameObject sat2inject;
+
     private void Start()
     {
+        sat0inject = GameObject.Find("Sat0Inject");
+        sat1inject = GameObject.Find("Sat1Inject");
+        sat2inject = GameObject.Find("Sat2Inject");
         lastApiUpdate = DateTime.Now;
         startTime = DateTime.Now;
+        sat0inject.SetActive(false);
+        sat1inject.SetActive(false);
+        sat2inject.SetActive(false);
     }
     private void Update()
     {
@@ -218,6 +233,7 @@ public class PayloadManager : MonoBehaviour
                 satText[0].color = Color.red;
                 satAnimators[0].SetBool("IsOffline", true);
                 satSprites[0].color = Color.red;
+                sat0inject.SetActive(true);
             } else {
                 satText[0].color = Color.white;
                 satAnimators[0].SetBool("IsOffline", false);
@@ -228,6 +244,7 @@ public class PayloadManager : MonoBehaviour
                 satText[1].color = Color.red;
                 satAnimators[1].SetBool("IsOffline", true);
                 satSprites[1].color = Color.red;
+                sat1inject.SetActive(true);
             } else {
                 satText[1].color = Color.white;
                 satAnimators[1].SetBool("IsOffline", false);
@@ -238,6 +255,7 @@ public class PayloadManager : MonoBehaviour
                 satText[2].color = Color.red;
                 satAnimators[2].SetBool("IsOffline", true);
                 satSprites[2].color = Color.red;
+                sat2inject.SetActive(true);
             } else {
                 satText[2].color = Color.white;
                 satAnimators[2].SetBool("IsOffline", false);
@@ -274,12 +292,12 @@ public class StatusData
     {
         if (sat == 0)
         {
-            return status0 == "ok";
+            return status0 == "OPERATIONAL";
         } else if (sat == 1)
         {
-            return status1 == "ok";
+            return status1 == "OPERATIONAL";
         } else {
-            return status2 == "ok";
+            return status2 == "OPERATIONAL";
         }
     }
 }
