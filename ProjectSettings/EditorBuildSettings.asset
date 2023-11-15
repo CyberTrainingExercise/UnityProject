@@ -14,7 +14,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/__Scenes/SymposiumUI.unity
     guid: 7409f9e41538b39329c04b0e5f31ab54
-  - enabled: 1
+  - enabled: 0
     path: Assets/__Scenes/BoNYUI.unity
     guid: 6b0b93a31c87af3a8ade386284dfa8d7
+  - enabled: 1
+    path: Assets/__Scenes/ReactorUI.unity
+    guid: 2e76e557588da889aa16e986363d5c7e
   m_configObjects: {}
