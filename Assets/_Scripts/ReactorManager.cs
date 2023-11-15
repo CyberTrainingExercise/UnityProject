@@ -32,6 +32,10 @@ public class ReactorManager : MonoBehaviour
     [SerializeField]
     private TMP_Text logs;
     private int lineCount;
+
+    private Boolean backup;
+
+    private Boolean main;
     private void Start(){
         lineCount = 12;
     }
@@ -54,6 +58,12 @@ public class ReactorManager : MonoBehaviour
         }
         if (Input.GetKeyDown("9")) {
             DefenseUp();
+        }
+        if (Input.GetKeyDown("0")) {
+            DisableGenerators();
+        }
+        if (Input.GetKeyDown("-")) {
+            EnableGenerators();
         }
     }
     private void AddLogEvent(string eventName)
@@ -100,15 +110,23 @@ public class ReactorManager : MonoBehaviour
         AddLogEvent("<color=green>FOB COMMS ONLINE<color=white>");
     }
     private void DefenseDown(){
-        AddLogEvent("<color=green>AIR DEFENSES OFFLINE<color=white>");
+        AddLogEvent("<color=red>AIR DEFENSES OFFLINE<color=white>");
     }
     private void DefenseUp(){
-        AddLogEvent("<color=red>AIR DEFENSES ONLINE<color=white>");
+        AddLogEvent("<color=green>AIR DEFENSES ONLINE<color=white>");
     }
 
     private void DisableGenerators(){
         boltSprite.color = Color.red;
         generatorCharge.text = "Backup Generator Charge: 0 MWH";
-        generatorTemp.text = "Backup Generator Temp: Unknown";
+        AddLogEvent("<color=red>CAUTION: Backup power lost<color=white>");
+        //generatorTemp.text = "Internal Temp: Unknown";
+    }
+
+    private void EnableGenerators(){
+        boltSprite.color = Color.white;
+        generatorCharge.text = "Backup Generator Charge: 220 MWH";
+        AddLogEvent("<color=green>Backup power online<color=white>");
+        //generatorTemp.text = "Internal Temp: 95 F";
     }
 }

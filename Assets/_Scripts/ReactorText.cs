@@ -19,6 +19,8 @@ public class ReactorText : MonoBehaviour
     [SerializeField]
     private bool shouldFall = false;
     [SerializeField]
+    private bool reactor = false;
+    [SerializeField]
     private float fallRate = 8;
     [SerializeField]
     private bool cutoff = false;
@@ -58,7 +60,8 @@ public class ReactorText : MonoBehaviour
             num = (int)(num + UnityEngine.Random.Range(-1, 1) * volitility);
             if (shouldFall && num > low + ((high - low) / 8)) {
                 // if in the upper 7/8ths drop pseudoexponentially
-                num -= (int)((num - low) / fallRate);
+                if(!reactor || (reactor && ))
+                    num -= (int)((num - low) / fallRate);
             } else if (cutoff) {
                 num = low;
             }
