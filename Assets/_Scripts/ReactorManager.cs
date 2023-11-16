@@ -28,7 +28,11 @@ public class ReactorManager : MonoBehaviour
     [SerializeField]
     private TMP_Text generatorCharge;
     [SerializeField]
+    private TMP_Text generatorCharge2;
+    [SerializeField]
     private TMP_Text generatorTemp;
+    [SerializeField]
+    private TMP_Text generatorUp;
     [SerializeField]
     private TMP_Text logs;
     private int lineCount;
@@ -77,7 +81,7 @@ public class ReactorManager : MonoBehaviour
             now += "0";
         }
         now += DateTime.Now.Minute + ": ";
-        if (lineCount < 24){
+        if (lineCount < 18){
             logs.text += now + eventName;
             lineCount++;
         }
@@ -119,6 +123,8 @@ public class ReactorManager : MonoBehaviour
     private void DisableGenerators(){
         boltSprite.color = Color.red;
         generatorCharge.text = "Backup Generator Charge: 0 MWH";
+        generatorCharge2.text = "Backup Generator Charge: 0 MWH";
+        generatorUp.text = "false";
         AddLogEvent("<color=red>CAUTION: Backup power lost<color=white>");
         //generatorTemp.text = "Internal Temp: Unknown";
     }
@@ -126,6 +132,8 @@ public class ReactorManager : MonoBehaviour
     private void EnableGenerators(){
         boltSprite.color = Color.white;
         generatorCharge.text = "Backup Generator Charge: 220 MWH";
+        generatorCharge2.text = "Backup Generator Charge: 220 MWH";
+        generatorUp.text = "true";
         AddLogEvent("<color=green>Backup power online<color=white>");
         //generatorTemp.text = "Internal Temp: 95 F";
     }

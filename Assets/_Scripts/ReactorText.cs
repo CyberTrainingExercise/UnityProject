@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using TMPro;
+using UnityEngine.Analytics;
 
 public class ReactorText : MonoBehaviour
 {
@@ -24,6 +25,8 @@ public class ReactorText : MonoBehaviour
     private float fallRate = 8;
     [SerializeField]
     private bool cutoff = false;
+    [SerializeField]
+    private TMP_Text generatorUp = null;
     [SerializeField]
     private TMP_Text lastUpdate;
 
@@ -60,8 +63,13 @@ public class ReactorText : MonoBehaviour
             num = (int)(num + UnityEngine.Random.Range(-1, 1) * volitility);
             if (shouldFall && num > low + ((high - low) / 8)) {
                 // if in the upper 7/8ths drop pseudoexponentially
-                if(!reactor || (reactor && ))
+                try{
+                    if(!reactor || (reactor && (num > 220 || generatorUp.text == "false")))
+                        num -= (int)((num - low) / fallRate);
+                }
+                catch (NullReferenceException){
                     num -= (int)((num - low) / fallRate);
+                }
             } else if (cutoff) {
                 num = low;
             }
@@ -70,6 +78,13 @@ public class ReactorText : MonoBehaviour
             }
             if (num > high) {
                 num = high;
+            }
+            try{
+                if (generatorUp.text == "true")
+                    num = 220;
+            }
+            catch (NullReferenceException){
+                
             }
             text.text = prefix + num + postfix;
             time = Time.time + 5;
