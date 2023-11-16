@@ -122,8 +122,8 @@ public class ReactorManager : MonoBehaviour
 
     private void DisableGenerators(){
         boltSprite.color = Color.red;
-        generatorCharge.text = "Backup Generator Charge: 0 MWH";
-        generatorCharge2.text = "Backup Generator Charge: 0 MWH";
+        generatorCharge.text = "Backup Generator Output: 0 MWH";
+        generatorCharge2.text = "Backup Generator Output: 0 MWH";
         generatorUp.text = "false";
         AddLogEvent("<color=red>CAUTION: Backup power lost<color=white>");
         //generatorTemp.text = "Internal Temp: Unknown";

@@ -2738,7 +2738,7 @@ MonoBehaviour:
   statusOnSprite: {fileID: 3286163911610860551, guid: 1dd3e22a5ad6b918bb015b361c56a283, type: 3}
   statusOffSprite: {fileID: 3286163911610860551, guid: 50ebc110cac75a2efabcbf44e9c3b8f1, type: 3}
   powerSprite: {fileID: 1351815496752236634}
-  powerOnSprite: {fileID: 3286163911610860551, guid: be667deb5e67f73d48eadb2a4e286355, type: 3}
+  powerOnSprite: {fileID: 3286163911610860551, guid: f96340b553e229147a67c2b21662e2f2, type: 3}
   powerOffSprite: {fileID: 3286163911610860551, guid: c2f03731f40055941b3084549ab0d2e3, type: 3}
   boltSprite: {fileID: 1351815497194462631}
   generatorCharge: {fileID: 2029205230}
