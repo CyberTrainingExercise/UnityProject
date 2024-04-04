@@ -5,7 +5,7 @@ using System;
 using SimpleHTTP;
 using TMPro;
 
-public class PayloadManager : MonoBehaviour
+public class Symposium24Manager : MonoBehaviour
 {
     [Header("Text")]
     [SerializeField]
@@ -21,22 +21,20 @@ public class PayloadManager : MonoBehaviour
 
     [Header("System - DO NOT EDIT BELOW")]
     [SerializeField]
-    private TMP_Text[] satText;
+    private TMP_Text[] statusText;
     [SerializeField]
-    private Animator[] satAnimators;
+    private Animator[] dishAnimators;
     [SerializeField]
-    private SpriteRenderer[] satSprites;
+    private SpriteRenderer[] dishSprites;
     [SerializeField]
     private TMP_Text connectionText;
     [SerializeField]
     private TMP_Text timeUntilText;
     [SerializeField]
 
-    private TMP_Text[] satInjectText;
-    [SerializeField]
     private GameObject warningText;
 
-    private StatusData data;
+    private StationData data;
 
     private DateTime startTime;
 
@@ -53,7 +51,7 @@ public class PayloadManager : MonoBehaviour
             StartCoroutine(ApiUpdate());
         }
     }
-    private void UpdateConnectionStatus(int timeInPeriod, string connectionStatus, StatusData data, int satX)
+    private void UpdateConnectionStatus(int timeInPeriod, string connectionStatus, StationData data, int satX)
     {
         // satX
         int satY = (satX + 1) % 3;
@@ -197,7 +195,7 @@ public class PayloadManager : MonoBehaviour
     private IEnumerator ApiUpdate()
     {
         // Create the request object
-        Request request = new Request("http://localhost:5001/status");
+        Request request = new Request("http://192.168.1.11:5001/status");
 
         // Instantiate the client
         Client http = new Client();
@@ -211,42 +209,42 @@ public class PayloadManager : MonoBehaviour
             // StatusData dataOut = new StatusData("ok", "ok", "ok");
             // string json = JsonUtility.ToJson(dataOut);
             // print("Json data: " + json);
-            data = JsonUtility.FromJson<StatusData>(resp.Body());
+            data = JsonUtility.FromJson<StationData>(resp.Body());
             print("Json data: " + data);
-            satText[0].text = "Sat0: " + data.status0;
-            satText[1].text = "Sat1: " + data.status1;
-            satText[2].text = "Sat2: " + data.status2;
+            statusText[0].text = "Colorado: " + data.status0;
+            statusText[1].text = "Africa: " + data.status1;
+            statusText[2].text = "Asia: " + data.status2;
             if (data.status0 == "offline") 
             {
-                satText[0].color = Color.red;
-                satAnimators[0].SetBool("IsOffline", true);
-                satSprites[0].color = Color.red;
+                statusText[0].color = Color.red;
+                dishAnimators[0].SetBool("Down", true);
+                dishSprites[0].color = Color.red;
             } else {
-                satText[0].color = Color.white;
-                satAnimators[0].SetBool("IsOffline", false);
-                satSprites[0].color = Color.white;
+                statusText[0].color = Color.green;
+                dishAnimators[0].SetBool("Down", false);
+                dishSprites[0].color = Color.green;
             }
             if (data.status1 == "offline")
             {
-                satText[1].color = Color.red;
-                satAnimators[1].SetBool("IsOffline", true);
-                satSprites[1].color = Color.red;
+                statusText[1].color = Color.red;
+                dishAnimators[1].SetBool("Down", true);
+                dishSprites[1].color = Color.red;
             } else {
-                satText[1].color = Color.white;
-                satAnimators[1].SetBool("IsOffline", false);
-                satSprites[1].color = Color.white;
+                statusText[1].color = Color.green;
+                dishAnimators[1].SetBool("Down", false);
+                dishSprites[1].color = Color.green;
             }
             if (data.status2 == "offline")
             {
-                satText[2].color = Color.red;
-                satAnimators[2].SetBool("IsOffline", true);
-                satSprites[2].color = Color.red;
+                statusText[2].color = Color.red;
+                dishAnimators[2].SetBool("Down", true);
+                dishSprites[2].color = Color.red;
             } else {
-                satText[2].color = Color.white;
-                satAnimators[2].SetBool("IsOffline", false);
-                satSprites[2].color = Color.white;
+                statusText[2].color = Color.green;
+                dishAnimators[2].SetBool("Down", false);
+                dishSprites[2].color = Color.green;
             }
-            UpdateAllConnectionStatus();
+            //UpdateAllConnectionStatus();
             Debug.Log("status: " + resp.Status().ToString() + "\nbody: " + resp.Body());
         } else {
             Debug.Log("error: " + http.Error());
@@ -254,20 +252,20 @@ public class PayloadManager : MonoBehaviour
     }
     private void SetStatus(int sat, bool status)
     {
-        satText[sat].color = status ? Color.white : Color.red;
-        satAnimators[sat].SetBool("IsOffline", status);
-        satSprites[sat].color = status ? Color.white : Color.red;
+        statusText[sat].color = status ? Color.white : Color.red;
+        //dishAnimators[sat].SetBool("Down", status);
+        dishSprites[sat].color = status ? Color.white : Color.red;
     }
 }
 [Serializable]
-public class StatusData
+public class StationData
 {
     // in this format for REST request serialization
     public String status0;
     public String status1;
     public String status2;
 
-    public StatusData(String status0, String status1, String status2)
+    public StationData(String status0, String status1, String status2)
     {
         this.status0 = status0;
         this.status1 = status1;

@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/__Scenes/TerrasatUI.unity
     guid: 545457af986a2b4e49fd90919852cbdb
   - enabled: 0

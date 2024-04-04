@@ -41,3 +41,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Dishes
+    uniqueID: 3296421547
+    locked: 0
